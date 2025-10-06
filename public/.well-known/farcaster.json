@@ -1,1 +1,27 @@
-{}
+{
+    "frame": {
+      "name": "AdEx Aura Insights",
+      "version": "1",
+      "iconUrl": "https://aura-miniapp.netlify.app/icon.png",
+      "homeUrl": "https://https://aura-miniapp.netlify.app/",
+      "splashImageUrl": "https://aura-miniapp.netlify.app/icon.png",
+      "splashBackgroundColor": "#0b0c0f",
+      "webhookUrl": "https://https://aura-miniapp.netlify.app//api/webhook",
+      "tags": [
+        "defi",
+        "ai",
+        "agent",
+        "adex",
+        "aura"
+      ],
+      "primaryCategory": "finance",
+      "heroImageUrl": "https://aura-miniapp.netlify.app/banner.png",
+      "subtitle": "Real-time insights and automated DeFi strategies for your portfolio ",
+      "description": "AURA’s AI agent framework simplifies the Web3 experience by combining AI, onchain data, and real-time insights to deliver smart, personalized, and automated strategies. It monitors activity across Ethereum and Layer 2 networks — analyzing transactions, app usage, risk profiles, and fund movements — to suggest the most profitable next steps."
+    },
+    "accountAssociation": {
+      "header": "eyJmaWQiOjIyODA1MywidHlwZSI6ImF1dGgiLCJrZXkiOiIweDcxMDdGNjIxYzg2NERjRTM1ODY1ZDgyNUMwOTU3OTBmQzJjMTU4NjMifQ",
+      "payload": "eyJkb21haW4iOiJodHRwczovL2F1cmEtbWluaWFwcC5uZXRsaWZ5LmFwcC8ifQ",
+      "signature": "YhNz6xK/xs9tIOVDmyhf1adh4QLPReN8Wshm2EjMMUF/NMvYgkOZajg1t5pNWnHUOJU9f0il/SMWdu1BL45v1xs="
+    }
+  }
