@@ -149,7 +149,7 @@ function ConnectMenu({ usd }: { usd: Intl.NumberFormat }) {
 }
 
 function StrategiesView({ data, usd }: { data: PortfolioStrategiesResponse; usd: Intl.NumberFormat }) {
-  const [portfolioOpen, setPortfolioOpen] = useState(true);
+  const [portfolioOpen, setPortfolioOpen] = useState(false);
   const [strategiesOpen, setStrategiesOpen] = useState(true);
   return (
     <div className="stack-12">
