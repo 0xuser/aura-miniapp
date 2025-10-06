@@ -3,14 +3,9 @@ import { useEffect, useMemo, useState } from "react";
 import { useAccount, useConnect } from "wagmi";
 import { fetchPortfolioStrategies, type PortfolioStrategiesResponse } from "./aura";
 
-function shortAddress(addr: string) {
-  if (!addr) return "";
-  return addr.length <= 10 ? addr : `${addr.slice(0, 6)}…${addr.slice(-4)}`;
-}
-
 function buildCastTextFromData(data: PortfolioStrategiesResponse) {
   const parts: string[] = [];
-  parts.push(`Aura strategies for ${shortAddress(data.address)}:`);
+  parts.push("Aura insights for my wallet");
   const flat = data.strategies.flatMap((s) => s.response);
   for (const r of flat.slice(0, 3)) {
     const first = r.actions[0];
@@ -61,14 +56,13 @@ function App() {
   return (
     <div className="app stack-12">
       <img className="banner" src="/banner.png" alt="AdEx AURA banner" />
-      <div className="heading">Aura Mini App</div>
       <div className="card">
         AURA’s AI agent framework simplifies the Web3 experience by combining AI, onchain data, and real-time insights to deliver smart, personalized, and automated strategies. It monitors activity across Ethereum and Layer 2 networks — analyzing transactions, app usage, risk profiles, and fund movements — to suggest the most profitable next steps.
       </div>
       <ConnectMenu usd={usd} />
       <div className="divider" style={{ margin: "24px 0 8px" }} />
       <div className="footnote">
-        This mini app was created by <a href="https://farcaster.xyz/onchainuser" target="_blank" rel="noreferrer">@onchainuser</a>, who has no affiliation with <a href="https://www.adex.network/" target="_blank" rel="noreferrer">@adex-network</a> beyond being a community member.
+        Created by <a href="https://farcaster.xyz/onchainuser" target="_blank" rel="noreferrer">@onchainuser</a>, with no affiliation to <a href="https://www.adex.network/" target="_blank" rel="noreferrer">AdEx</a>.
       </div>
     </div>
   );
@@ -155,72 +149,88 @@ function ConnectMenu({ usd }: { usd: Intl.NumberFormat }) {
 }
 
 function StrategiesView({ data, usd }: { data: PortfolioStrategiesResponse; usd: Intl.NumberFormat }) {
+  const [portfolioOpen, setPortfolioOpen] = useState(true);
+  const [strategiesOpen, setStrategiesOpen] = useState(true);
   return (
     <div className="stack-12">
       <div className="card stack-8">
-        <div className="heading">Portfolio</div>
+        <div className="row" style={{ justifyContent: "space-between" }}>
+          <div className="heading">Portfolio</div>
+          <button className="btn btn-ghost" type="button" onClick={() => setPortfolioOpen((v) => !v)}>
+            {portfolioOpen ? "Hide" : "Show"}
+          </button>
+        </div>
         <div className="muted mono ellipsis" title={data.address} style={{ maxWidth: 520 }}>
           Address: {data.address}
         </div>
-        <div className="grid">
-          {data.portfolio.map((p) => (
-            <div key={p.network.chainId} className="card stack-8">
-              <div className="row">
-                <div className="heading">{p.network.name}</div>
-                <div className="muted">chainId {p.network.chainId}</div>
+        {portfolioOpen && (
+          <div className="grid">
+            {data.portfolio.map((p) => (
+              <div key={p.network.chainId} className="card stack-8">
+                <div className="row">
+                  <div className="heading">{p.network.name}</div>
+                  <div className="muted">chainId {p.network.chainId}</div>
+                </div>
+                {p.tokens.length === 0 ? (
+                  <div className="muted">No tokens</div>
+                ) : (
+                  <ul>
+                    {p.tokens.map((t) => (
+                      <li key={`${t.network}:${t.address}`}>
+                        {t.symbol}: {t.balance} ({usd.format(t.balanceUSD || 0)})
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
-              {p.tokens.length === 0 ? (
-                <div className="muted">No tokens</div>
-              ) : (
-                <ul>
-                  {p.tokens.map((t) => (
-                    <li key={`${t.network}:${t.address}`}>
-                      {t.symbol}: {t.balance} ({usd.format(t.balanceUSD || 0)})
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
 
       <div className="card stack-8">
-        <div className="heading">Strategies</div>
+        <div className="row" style={{ justifyContent: "space-between" }}>
+          <div className="heading">Strategies</div>
+          <button className="btn btn-ghost" type="button" onClick={() => setStrategiesOpen((v) => !v)}>
+            {strategiesOpen ? "Hide" : "Show"}
+          </button>
+        </div>
         {data.strategies.length === 0 ? (
           <div className="muted">No strategies</div>
         ) : (
-          <div className="stack-12">
-            <div className="grid">
-              {data.strategies.map((s, idx) => (
-                <div key={idx} className="card stack-8">
-                  <div className="muted">
-                    LLM: {s.llm.provider} / {s.llm.model} (responseTime: {s.responseTime}ms)
-                  </div>
-                  {s.error && <div style={{ color: "var(--negative)" }}>Worker error: {s.error}</div>}
-                  {s.response.map((r, rIdx) => (
-                    <div key={rIdx} className="stack-8">
-                      <div>
-                        Name: {r.name} | Risk: {r.risk}
-                      </div>
-                      <ul>
-                        {r.actions.map((a, aIdx) => (
-                          <li key={aIdx}>
-                            <div>Tokens: {a.tokens}</div>
-                            <div>Description: {a.description}</div>
-                            <div>APY: {a.apy}</div>
-                            <div>Platforms: {a.platforms.map((p) => p.name).join(", ")}</div>
-                            <div>Networks: {a.networks.join(", ")}</div>
-                            <div>Operations: {a.operations.join(", ")}</div>
-                          </li>
-                        ))}
-                      </ul>
+          strategiesOpen && (
+            <div className="stack-12">
+              <div className="grid">
+                {data.strategies.map((s, idx) => (
+                  <div key={idx} className="card stack-8">
+                    <div className="muted">
+                      LLM: {s.llm.provider} / {s.llm.model} (responseTime: {s.responseTime}ms)
                     </div>
-                  ))}
-                </div>
-              ))}
+                    {s.error && <div style={{ color: "var(--negative)" }}>Worker error: {s.error}</div>}
+                    {s.response.map((r, rIdx) => (
+                      <div key={rIdx} className="stack-8">
+                        <div>
+                          Name: {r.name} | Risk: {r.risk}
+                        </div>
+                        <ul>
+                          {r.actions.map((a, aIdx) => (
+                            <li key={aIdx}>
+                              <div>Tokens: {a.tokens}</div>
+                              <div>Description: {a.description}</div>
+                              <div>APY: {a.apy}</div>
+                              <div>Platforms: {a.platforms.map((p) => p.name).join(", ")}</div>
+                              <div>Networks: {a.networks.join(", ")}</div>
+                              <div>Operations: {a.operations.join(", ")}</div>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          )
         )}
       </div>
     </div>

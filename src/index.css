@@ -87,6 +87,14 @@ body {
 }
 .btn-primary:hover { filter: brightness(0.95); }
 
+.btn-ghost {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--text-dim);
+  height: 30px;
+  padding: 0 10px;
+}
+
 /* Lists */
 ul { padding-left: 18px; margin: 8px 0 0; }
 li { color: var(--text-dim); }
