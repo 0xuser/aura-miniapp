@@ -66,6 +66,10 @@ function App() {
         AURA’s AI agent framework simplifies the Web3 experience by combining AI, onchain data, and real-time insights to deliver smart, personalized, and automated strategies. It monitors activity across Ethereum and Layer 2 networks — analyzing transactions, app usage, risk profiles, and fund movements — to suggest the most profitable next steps.
       </div>
       <ConnectMenu usd={usd} />
+      <div className="divider" style={{ margin: "24px 0 8px" }} />
+      <div className="footnote">
+        This mini app was created by <a href="https://farcaster.xyz/onchainuser" target="_blank" rel="noreferrer">@onchainuser</a>, who has no affiliation with <a href="https://www.adex.network/" target="_blank" rel="noreferrer">@adex-network</a> beyond being a community member.
+      </div>
     </div>
   );
 }
@@ -105,7 +109,7 @@ function ConnectMenu({ usd }: { usd: Intl.NumberFormat }) {
   if (!isConnected) {
     return (
       <div className="card stack-12">
-        <div className="heading">Connect your wallet</div>
+        <div className="heading">Connect your wallet to view Aura insights</div>
         <button className="btn btn-primary" type="button" onClick={() => connect({ connector: connectors[0] })}>
           Connect
         </button>
@@ -131,7 +135,7 @@ function ConnectMenu({ usd }: { usd: Intl.NumberFormat }) {
             disabled={isLoading || hasFetched}
             title={hasFetched ? "Already fetched" : undefined}
           >
-            {isLoading ? "Fetching..." : "Get portfolio strategies"}
+            {isLoading ? "Fetching..." : "Get portfolio insights"}
           </button>
           <button
             className="btn"
@@ -140,7 +144,7 @@ function ConnectMenu({ usd }: { usd: Intl.NumberFormat }) {
             disabled={!data || data.strategies.length === 0}
             title={!data ? "Fetch strategies first" : undefined}
           >
-            Share on Farcaster
+            Share insights on Farcaster
           </button>
         </div>
         {error && <div style={{ color: "var(--negative)", marginTop: 8 }}>Error: {error}</div>}
