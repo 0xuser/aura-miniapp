@@ -62,7 +62,9 @@ function App() {
     <div className="app stack-12">
       <img className="banner" src="/banner.png" alt="AdEx AURA banner" />
       <div className="heading">Aura Mini App</div>
-      <div className="muted">The AI agent framework for Web3</div>
+      <div className="card">
+        AURA’s AI agent framework simplifies the Web3 experience by combining AI, onchain data, and real-time insights to deliver smart, personalized, and automated strategies. It monitors activity across Ethereum and Layer 2 networks — analyzing transactions, app usage, risk profiles, and fund movements — to suggest the most profitable next steps.
+      </div>
       <ConnectMenu usd={usd} />
     </div>
   );
