@@ -52,6 +52,17 @@ function App() {
   );
   useEffect(() => {
     sdk.actions.ready();
+    (async () => {
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const actions = (sdk as any)?.actions;
+        if (actions?.addMiniApp) {
+          await actions.addMiniApp();
+        }
+      } catch {
+        // user may reject or domain may not match manifest; ignore silently
+      }
+    })();
   }, []);
 
   return (
