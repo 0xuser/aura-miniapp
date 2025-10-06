@@ -15,16 +15,16 @@ function buildCastTextFromData(data: PortfolioStrategiesResponse) {
     const risk = r.risk || "unknown";
     parts.push(`- ${name} (${risk}) ${tokens}${apy}`);
   }
-  const cta = "Try Aura Mini App to get AI-generated earning strategies.";
   const appLink = "https://farcaster.xyz/miniapps/ZjU08KEPiEny/adex-aura-insights";
-  let text = [...parts, cta, appLink].join("\n");
+  const cta = `Try ${appLink} to get AI-generated earning strategies.`;
+  let text = [...parts, cta].join("\n");
   if (text.length > 350) {
     const head = parts[0];
     const body = parts.slice(1).join("\n");
-    const reserve = `\n${cta}\n${appLink}`;
+    const reserve = `\n${cta}`;
     const maxBody = Math.max(0, 350 - head.length - reserve.length - 6);
     const trimmedBody = body.length > maxBody ? body.slice(0, maxBody) + "..." : body;
-    text = [head, trimmedBody, cta, appLink].join("\n");
+    text = [head, trimmedBody, cta].join("\n");
   }
   return text;
 }

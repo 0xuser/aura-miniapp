@@ -4,7 +4,7 @@
       "version": "1",
       "iconUrl": "https://aura-miniapp.netlify.app/icon.png",
       "homeUrl": "https://aura-miniapp.netlify.app/",
-      "splashImageUrl": "https://aura-miniapp.netlify.app/hero.png",
+      "splashImageUrl": "https://aura-miniapp.netlify.app/icon.png",
       "splashBackgroundColor": "#0b0c0f",
       "webhookUrl": "https://aura-miniapp.netlify.app//api/webhook",
       "tags": [
