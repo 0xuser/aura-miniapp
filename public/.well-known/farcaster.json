@@ -4,18 +4,19 @@
       "version": "1",
       "iconUrl": "https://aura-miniapp.netlify.app/icon.png",
       "homeUrl": "https://aura-miniapp.netlify.app/",
-      "splashImageUrl": "https://aura-miniapp.netlify.app/icon.png",
+      "splashImageUrl": "https://aura-miniapp.netlify.app/hero.png",
       "splashBackgroundColor": "#0b0c0f",
       "webhookUrl": "https://aura-miniapp.netlify.app//api/webhook",
       "tags": [
+        "aura",
+        "adex",
         "defi",
         "ai",
-        "agent",
-        "adex",
-        "aura"
+        "portfolio"
       ],
       "primaryCategory": "finance",
-      "heroImageUrl": "https://aura-miniapp.netlify.app/banner.png",
+      "screenshotUrls": ["https://aura-miniapp.netlify.app/screenshot1.png", "https://aura-miniapp.netlify.app/screenshot2.png"],
+      "heroImageUrl": "https://aura-miniapp.netlify.app/hero.png",
       "subtitle": "Real-time portfolio insights",
       "description": "AURA brings clarity to Web3 with AI-driven insights - analyzing Ethereum and Layer 2 data to automate smarter, safer, and more profitable portfolio decisions."
     },
