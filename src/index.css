@@ -1,7 +1,19 @@
 :root {
-  background-color: #181818;
-  color: rgba(255, 255, 255, 0.87);
-  color-scheme: light dark;
+  /* Dark theme tokens */
+  --bg: #0b0c0f;
+  --bg-elev-1: #111318;
+  --bg-elev-2: #161922;
+  --border: #222734;
+  --text: rgba(255, 255, 255, 0.9);
+  --text-dim: rgba(255, 255, 255, 0.65);
+  --accent: #7c9aff;
+  --accent-contrast: #0b0c0f;
+  --positive: #38d39f;
+  --negative: #ff6b6b;
+
+  color-scheme: dark;
+  background-color: var(--bg);
+  color: var(--text);
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-synthesis: none;
   font-weight: 400;
@@ -13,9 +25,91 @@
   -webkit-text-size-adjust: 100%;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    background-color: #f8f8f8;
-    color: #181818;
-  }
+/* Layout */
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+}
+
+.app {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+.heading {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.muted {
+  color: var(--text-dim);
+}
+
+/* Card */
+.card {
+  background: linear-gradient(180deg, var(--bg-elev-1), var(--bg-elev-2));
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 12px;
+}
+
+.stack-8 > * + * { margin-top: 8px; }
+.stack-12 > * + * { margin-top: 12px; }
+.stack-16 > * + * { margin-top: 16px; }
+
+/* Button */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg-elev-1);
+  color: var(--text);
+  cursor: pointer;
+  transition: background 120ms ease, border-color 120ms ease, transform 60ms ease;
+}
+.btn:hover { background: var(--bg-elev-2); border-color: #2a3141; }
+.btn:active { transform: translateY(1px); }
+.btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.btn-primary {
+  background: var(--accent);
+  border-color: transparent;
+  color: var(--accent-contrast);
+}
+.btn-primary:hover { filter: brightness(0.95); }
+
+/* Lists */
+ul { padding-left: 18px; margin: 8px 0 0; }
+li { color: var(--text-dim); }
+
+/* Utility */
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+
+.kpi {
+  font-size: 14px;
+  color: var(--text-dim);
+}
+
+.divider {
+  height: 1px;
+  background: var(--border);
 }

@@ -9,10 +9,11 @@ function App() {
   }, []);
 
   return (
-    <>
-      <div>Mini App + Vite + TS + React + Wagmi xd</div>
+    <div className="app stack-12">
+      <div className="heading">Aura Mini App</div>
+      <div className="muted">The AI agent framework for Web3</div>
       <ConnectMenu />
-    </>
+    </div>
   );
 }
 
@@ -41,87 +42,98 @@ function ConnectMenu() {
 
   if (!isConnected) {
     return (
-      <button type="button" onClick={() => connect({ connector: connectors[0] })}>
-        Connect
-      </button>
+      <div className="card stack-12">
+        <div className="heading">Connect your wallet</div>
+        <button className="btn btn-primary" type="button" onClick={() => connect({ connector: connectors[0] })}>
+          Connect
+        </button>
+      </div>
     );
   }
 
   return (
-    <>
-      <div>Connected account:</div>
-      <div>{address}</div>
-      <button type="button" onClick={handleFetch} disabled={isLoading}>
-        {isLoading ? "Fetching..." : "Get portfolio strategies"}
-      </button>
-      {error && (
-        <div style={{ color: "#ff6b6b" }}>
-          Error: {error}
+    <div className="stack-12">
+      <div className="card">
+        <div className="row">
+          <div className="kpi">Connected</div>
+          <div className="muted">{address}</div>
         </div>
-      )}
+        <div className="divider" style={{ margin: "10px 0" }} />
+        <button className="btn btn-primary" type="button" onClick={handleFetch} disabled={isLoading}>
+          {isLoading ? "Fetching..." : "Get portfolio strategies"}
+        </button>
+        {error && <div style={{ color: "var(--negative)", marginTop: 8 }}>Error: {error}</div>}
+      </div>
       {data && <StrategiesView data={data} />}
-    </>
+    </div>
   );
 }
 
 function StrategiesView({ data }: { data: PortfolioStrategiesResponse }) {
   return (
-    <div style={{ marginTop: 12 }}>
-      <div>Address: {data.address}</div>
-      <div style={{ marginTop: 8 }}>Portfolio balances</div>
-      {data.portfolio.map((p) => (
-        <div key={p.network.chainId} style={{ padding: 8, border: "1px solid #444", marginTop: 6 }}>
-          <div>
-            Network: {p.network.name} (chainId: {p.network.chainId})
-          </div>
-          {p.tokens.length === 0 ? (
-            <div>No tokens</div>
-          ) : (
-            <ul>
-              {p.tokens.map((t) => (
-                <li key={`${t.network}:${t.address}`}>
-                  {t.symbol}: {t.balance} (${t.balanceUSD})
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-      ))}
-
-      <div style={{ marginTop: 12 }}>Strategies</div>
-      {data.strategies.length === 0 ? (
-        <div>No strategies</div>
-      ) : (
-        data.strategies.map((s, idx) => (
-          <div key={idx} style={{ padding: 8, border: "1px solid #444", marginTop: 6 }}>
-            <div>
-              LLM: {s.llm.provider} / {s.llm.model} (responseTime: {s.responseTime}ms)
-            </div>
-            {s.error && <div style={{ color: "#ff6b6b" }}>Worker error: {s.error}</div>}
-            {s.response.map((r, rIdx) => (
-              <div key={rIdx} style={{ marginTop: 6 }}>
-                <div>
-                  Name: {r.name} | Risk: {r.risk}
-                </div>
+    <div className="stack-12">
+      <div className="card stack-8">
+        <div className="heading">Portfolio</div>
+        <div className="muted">Address: {data.address}</div>
+        <div className="grid">
+          {data.portfolio.map((p) => (
+            <div key={p.network.chainId} className="card stack-8">
+              <div className="row">
+                <div className="heading">{p.network.name}</div>
+                <div className="muted">chainId {p.network.chainId}</div>
+              </div>
+              {p.tokens.length === 0 ? (
+                <div className="muted">No tokens</div>
+              ) : (
                 <ul>
-                  {r.actions.map((a, aIdx) => (
-                    <li key={aIdx}>
-                      <div>Tokens: {a.tokens}</div>
-                      <div>Description: {a.description}</div>
-                      <div>APY: {a.apy}</div>
-                      <div>
-                        Platforms: {a.platforms.map((p) => p.name).join(", ")}
-                      </div>
-                      <div>Networks: {a.networks.join(", ")}</div>
-                      <div>Operations: {a.operations.join(", ")}</div>
+                  {p.tokens.map((t) => (
+                    <li key={`${t.network}:${t.address}`}>
+                      {t.symbol}: {t.balance} (${t.balanceUSD})
                     </li>
                   ))}
                 </ul>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="card stack-8">
+        <div className="heading">Strategies</div>
+        {data.strategies.length === 0 ? (
+          <div className="muted">No strategies</div>
+        ) : (
+          <div className="grid">
+            {data.strategies.map((s, idx) => (
+              <div key={idx} className="card stack-8">
+                <div className="muted">
+                  LLM: {s.llm.provider} / {s.llm.model} (responseTime: {s.responseTime}ms)
+                </div>
+                {s.error && <div style={{ color: "var(--negative)" }}>Worker error: {s.error}</div>}
+                {s.response.map((r, rIdx) => (
+                  <div key={rIdx} className="stack-8">
+                    <div>
+                      Name: {r.name} | Risk: {r.risk}
+                    </div>
+                    <ul>
+                      {r.actions.map((a, aIdx) => (
+                        <li key={aIdx}>
+                          <div>Tokens: {a.tokens}</div>
+                          <div>Description: {a.description}</div>
+                          <div>APY: {a.apy}</div>
+                          <div>Platforms: {a.platforms.map((p) => p.name).join(", ")}</div>
+                          <div>Networks: {a.networks.join(", ")}</div>
+                          <div>Operations: {a.operations.join(", ")}</div>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
               </div>
             ))}
           </div>
-        ))
-      )}
+        )}
+      </div>
     </div>
   );
 }
