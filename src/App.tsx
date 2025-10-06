@@ -5,25 +5,26 @@ import { fetchPortfolioStrategies, type PortfolioStrategiesResponse } from "./au
 
 function buildCastTextFromData(data: PortfolioStrategiesResponse) {
   const parts: string[] = [];
-  parts.push("Aura insights for my wallet");
-  const flat = data.strategies.flatMap((s) => s.response);
+  parts.push("Aura insights for my wallet:");
+  const flat = data.strategies.flatMap((s) => s.response || []);
   for (const r of flat.slice(0, 3)) {
-    const first = r.actions[0];
-    const tokens = first ? first.tokens : "";
-    const apy = first && first.apy ? ` | APY ${first.apy}` : "";
-    parts.push(`- ${r.name} (${r.risk}) ${tokens}${apy}`);
+    const first = r.actions?.[0];
+    const tokens = first?.tokens || "";
+    const apy = first?.apy ? ` | APY ${first.apy}` : "";
+    const name = r.name || "Strategy";
+    const risk = r.risk || "unknown";
+    parts.push(`- ${name} (${risk}) ${tokens}${apy}`);
   }
   const cta = "Try Aura Mini App to get AI-generated earning strategies.";
-  const tags = "#Aura #AdEx #DeFi";
   const appLink = "https://farcaster.xyz/miniapps/ZjU08KEPiEny/adex-aura-insights";
-  let text = [...parts, cta, appLink, tags].join("\n");
+  let text = [...parts, cta, appLink].join("\n");
   if (text.length > 350) {
     const head = parts[0];
     const body = parts.slice(1).join("\n");
-    const reserve = `\n${cta}\n${appLink}\n${tags}`;
+    const reserve = `\n${cta}\n${appLink}`;
     const maxBody = Math.max(0, 350 - head.length - reserve.length - 6);
     const trimmedBody = body.length > maxBody ? body.slice(0, maxBody) + "..." : body;
-    text = [head, trimmedBody, cta, appLink, tags].join("\n");
+    text = [head, trimmedBody, cta, appLink].join("\n");
   }
   return text;
 }
@@ -177,19 +178,19 @@ function StrategiesView({ data, usd }: { data: PortfolioStrategiesResponse; usd:
         </div>
         {portfolioOpen && (
           <div className="grid">
-            {data.portfolio.map((p) => (
-              <div key={p.network.chainId} className="card stack-8">
+            {(data.portfolio || []).map((p) => (
+              <div key={p.network?.chainId || 'unknown'} className="card stack-8">
                 <div className="row">
-                  <div className="heading">{p.network.name}</div>
-                  <div className="muted">chainId {p.network.chainId}</div>
+                  <div className="heading">{p.network?.name || 'Unknown Network'}</div>
+                  <div className="muted">chainId {p.network?.chainId || 'N/A'}</div>
                 </div>
-                {p.tokens.length === 0 ? (
+                {(!p.tokens || p.tokens.length === 0) ? (
                   <div className="muted">No tokens</div>
                 ) : (
                   <ul>
-                    {p.tokens.map((t) => (
-                      <li key={`${t.network}:${t.address}`}>
-                        {t.symbol}: {t.balance} ({usd.format(t.balanceUSD || 0)})
+                    {p.tokens.map((t, idx) => (
+                      <li key={`${p.network?.chainId || 'unknown'}:${t.address || idx}`}>
+                        {t.symbol || 'Unknown'}: {t.balance || 0} ({usd.format(t.balanceUSD || 0)})
                       </li>
                     ))}
                   </ul>
@@ -207,7 +208,7 @@ function StrategiesView({ data, usd }: { data: PortfolioStrategiesResponse; usd:
             {strategiesOpen ? "Hide" : "Show"}
           </button>
         </div>
-        {data.strategies.length === 0 ? (
+        {(!data.strategies || data.strategies.length === 0) ? (
           <div className="muted">No strategies</div>
         ) : (
           strategiesOpen && (
@@ -215,22 +216,22 @@ function StrategiesView({ data, usd }: { data: PortfolioStrategiesResponse; usd:
               <div className="grid">
                 {data.strategies.map((s, idx) => (
                   <div key={idx} className="card stack-8">
-                  <div className="muted">LLM: {s.llm.provider} / {s.llm.model}</div>
+                    <div className="muted">LLM: {s.llm?.provider || 'Unknown'} / {s.llm?.model || 'Unknown'}</div>
                     {s.error && <div style={{ color: "var(--negative)" }}>Worker error: {s.error}</div>}
-                    {s.response.map((r, rIdx) => (
+                    {(s.response || []).map((r, rIdx) => (
                       <div key={rIdx} className="stack-8">
                         <div>
-                          Name: {r.name} | Risk: {r.risk}
+                          Name: {r.name || 'Unknown Strategy'} | Risk: {r.risk || 'unknown'}
                         </div>
                         <ul>
-                          {r.actions.map((a, aIdx) => (
+                          {(r.actions || []).map((a, aIdx) => (
                             <li key={aIdx}>
-                              <div>Tokens: {a.tokens}</div>
-                              <div>Description: {a.description}</div>
-                              <div>APY: {a.apy}</div>
-                              <div>Platforms: {a.platforms.map((p) => p.name).join(", ")}</div>
-                              <div>Networks: {a.networks.join(", ")}</div>
-                              <div>Operations: {a.operations.join(", ")}</div>
+                              <div>Tokens: {a.tokens || 'N/A'}</div>
+                              <div>Description: {a.description || 'No description available'}</div>
+                              <div>APY: {a.apy || 'N/A'}</div>
+                              <div>Platforms: {(a.platforms || []).map((p) => p?.name || 'Unknown').join(", ")}</div>
+                              <div>Networks: {(a.networks || []).join(", ")}</div>
+                              <div>Operations: {(a.operations || []).join(", ")}</div>
                             </li>
                           ))}
                         </ul>
