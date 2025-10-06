@@ -113,3 +113,8 @@ li { color: var(--text-dim); }
   height: 1px;
   background: var(--border);
 }
+
+/* Long text helpers */
+.mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+.ellipsis { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.break-anywhere { overflow-wrap: anywhere; word-break: break-word; }

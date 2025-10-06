@@ -4,6 +4,16 @@ import { useAccount, useConnect } from "wagmi";
 import { fetchPortfolioStrategies, type PortfolioStrategiesResponse } from "./aura";
 
 function App() {
+  const usd = useMemo(
+    () =>
+      new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }),
+    [],
+  );
   useEffect(() => {
     sdk.actions.ready();
   }, []);
@@ -12,12 +22,12 @@ function App() {
     <div className="app stack-12">
       <div className="heading">Aura Mini App</div>
       <div className="muted">The AI agent framework for Web3</div>
-      <ConnectMenu />
+      <ConnectMenu usd={usd} />
     </div>
   );
 }
 
-function ConnectMenu() {
+function ConnectMenu({ usd }: { usd: Intl.NumberFormat }) {
   const { isConnected, address } = useAccount();
   const { connect, connectors } = useConnect();
   const [isLoading, setIsLoading] = useState(false);
@@ -56,7 +66,9 @@ function ConnectMenu() {
       <div className="card">
         <div className="row">
           <div className="kpi">Connected</div>
-          <div className="muted">{address}</div>
+          <div className="muted mono ellipsis" title={address} style={{ maxWidth: 360 }}>
+            {address}
+          </div>
         </div>
         <div className="divider" style={{ margin: "10px 0" }} />
         <button className="btn btn-primary" type="button" onClick={handleFetch} disabled={isLoading}>
@@ -64,17 +76,19 @@ function ConnectMenu() {
         </button>
         {error && <div style={{ color: "var(--negative)", marginTop: 8 }}>Error: {error}</div>}
       </div>
-      {data && <StrategiesView data={data} />}
+      {data && <StrategiesView data={data} usd={usd} />}
     </div>
   );
 }
 
-function StrategiesView({ data }: { data: PortfolioStrategiesResponse }) {
+function StrategiesView({ data, usd }: { data: PortfolioStrategiesResponse; usd: Intl.NumberFormat }) {
   return (
     <div className="stack-12">
       <div className="card stack-8">
         <div className="heading">Portfolio</div>
-        <div className="muted">Address: {data.address}</div>
+        <div className="muted mono ellipsis" title={data.address} style={{ maxWidth: 520 }}>
+          Address: {data.address}
+        </div>
         <div className="grid">
           {data.portfolio.map((p) => (
             <div key={p.network.chainId} className="card stack-8">
@@ -88,7 +102,7 @@ function StrategiesView({ data }: { data: PortfolioStrategiesResponse }) {
                 <ul>
                   {p.tokens.map((t) => (
                     <li key={`${t.network}:${t.address}`}>
-                      {t.symbol}: {t.balance} (${t.balanceUSD})
+                      {t.symbol}: {t.balance} ({usd.format(t.balanceUSD || 0)})
                     </li>
                   ))}
                 </ul>
