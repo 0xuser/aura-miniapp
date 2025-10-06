@@ -3,6 +3,46 @@ import { useEffect, useMemo, useState } from "react";
 import { useAccount, useConnect } from "wagmi";
 import { fetchPortfolioStrategies, type PortfolioStrategiesResponse } from "./aura";
 
+function shortAddress(addr: string) {
+  if (!addr) return "";
+  return addr.length <= 10 ? addr : `${addr.slice(0, 6)}…${addr.slice(-4)}`;
+}
+
+function buildCastTextFromData(data: PortfolioStrategiesResponse) {
+  const parts: string[] = [];
+  parts.push(`Aura strategies for ${shortAddress(data.address)}:`);
+  const flat = data.strategies.flatMap((s) => s.response);
+  for (const r of flat.slice(0, 3)) {
+    const first = r.actions[0];
+    const tokens = first ? first.tokens : "";
+    const apy = first && first.apy ? ` | APY ${first.apy}` : "";
+    parts.push(`- ${r.name} (${r.risk}) ${tokens}${apy}`);
+  }
+  const cta = "Try Aura Mini App to get AI-generated earning strategies.";
+  const tags = "#Aura #AdEx";
+  let text = [...parts, cta, tags].join("\n");
+  if (text.length > 350) {
+    const head = parts[0];
+    const body = parts.slice(1).join("\n");
+    const reserve = `\n${cta}\n${tags}`;
+    const maxBody = Math.max(0, 350 - head.length - reserve.length - 6);
+    const trimmedBody = body.length > maxBody ? body.slice(0, maxBody) + "..." : body;
+    text = [head, trimmedBody, cta, tags].join("\n");
+  }
+  return text;
+}
+
+function openCastComposer(data: PortfolioStrategiesResponse) {
+  const text = buildCastTextFromData(data);
+  const url = `https://warpcast.com/~/compose?text=${encodeURIComponent(text)}`;
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (sdk as any)?.actions?.openUrl?.(url) ?? window.open(url, "_blank");
+  } catch {
+    window.open(url, "_blank");
+  }
+}
+
 function App() {
   const usd = useMemo(
     () =>
@@ -33,7 +73,15 @@ function ConnectMenu({ usd }: { usd: Intl.NumberFormat }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<PortfolioStrategiesResponse | null>(null);
+  const [hasFetched, setHasFetched] = useState(false);
   const controller = useMemo(() => new AbortController(), []);
+
+  // Re-enable fetching when address changes
+  useEffect(() => {
+    setHasFetched(false);
+    setData(null);
+    setError(null);
+  }, [address]);
 
   async function handleFetch() {
     if (!address) return;
@@ -43,6 +91,7 @@ function ConnectMenu({ usd }: { usd: Intl.NumberFormat }) {
     try {
       const res = await fetchPortfolioStrategies({ address, signal: controller.signal });
       setData(res);
+      setHasFetched(true);
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
     } finally {
@@ -71,9 +120,26 @@ function ConnectMenu({ usd }: { usd: Intl.NumberFormat }) {
           </div>
         </div>
         <div className="divider" style={{ margin: "10px 0" }} />
-        <button className="btn btn-primary" type="button" onClick={handleFetch} disabled={isLoading}>
-          {isLoading ? "Fetching..." : "Get portfolio strategies"}
-        </button>
+        <div className="row">
+          <button
+            className="btn btn-primary"
+            type="button"
+            onClick={handleFetch}
+            disabled={isLoading || hasFetched}
+            title={hasFetched ? "Already fetched" : undefined}
+          >
+            {isLoading ? "Fetching..." : "Get portfolio strategies"}
+          </button>
+          <button
+            className="btn"
+            type="button"
+            onClick={() => data && openCastComposer(data)}
+            disabled={!data || data.strategies.length === 0}
+            title={!data ? "Fetch strategies first" : undefined}
+          >
+            Share on Farcaster
+          </button>
+        </div>
         {error && <div style={{ color: "var(--negative)", marginTop: 8 }}>Error: {error}</div>}
       </div>
       {data && <StrategiesView data={data} usd={usd} />}
@@ -82,47 +148,6 @@ function ConnectMenu({ usd }: { usd: Intl.NumberFormat }) {
 }
 
 function StrategiesView({ data, usd }: { data: PortfolioStrategiesResponse; usd: Intl.NumberFormat }) {
-  function buildCastText() {
-    const parts: string[] = [];
-    parts.push(`Aura strategies for ${shortAddress(data.address)}:`);
-    const flat = data.strategies.flatMap((s) => s.response);
-    for (const r of flat.slice(0, 3)) {
-      const first = r.actions[0];
-      const tokens = first ? first.tokens : "";
-      const apy = first && first.apy ? ` | APY ${first.apy}` : "";
-      parts.push(`- ${r.name} (${r.risk}) ${tokens}${apy}`);
-    }
-    const cta = "Try Aura Mini App to get AI-generated earning strategies.";
-    const tags = "#Aura #Farcaster";
-    let text = [...parts, cta, tags].join("\n");
-    if (text.length > 350) {
-      // Trim the strategies section but keep CTA and tags
-      const head = parts[0];
-      const body = parts.slice(1).join("\n");
-      const reserve = `\n${cta}\n${tags}`;
-      const maxBody = Math.max(0, 350 - head.length - reserve.length - 6);
-      const trimmedBody = body.length > maxBody ? body.slice(0, maxBody) + "..." : body;
-      text = [head, trimmedBody, cta, tags].join("\n");
-    }
-    return text;
-  }
-
-  function shortAddress(addr: string) {
-    if (!addr) return "";
-    return addr.length <= 10 ? addr : `${addr.slice(0, 6)}…${addr.slice(-4)}`;
-  }
-
-  function openCastComposer() {
-    const text = buildCastText();
-    const url = `https://warpcast.com/~/compose?text=${encodeURIComponent(text)}`;
-    try {
-      // Prefer opening within Farcaster client if available
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (sdk as any)?.actions?.openUrl?.(url) ?? window.open(url, "_blank");
-    } catch {
-      window.open(url, "_blank");
-    }
-  }
   return (
     <div className="stack-12">
       <div className="card stack-8">
@@ -159,9 +184,6 @@ function StrategiesView({ data, usd }: { data: PortfolioStrategiesResponse; usd:
           <div className="muted">No strategies</div>
         ) : (
           <div className="stack-12">
-            <button className="btn btn-primary" type="button" onClick={openCastComposer}>
-              Share on Farcaster
-            </button>
             <div className="grid">
               {data.strategies.map((s, idx) => (
                 <div key={idx} className="card stack-8">
