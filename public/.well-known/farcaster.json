@@ -16,8 +16,8 @@
       ],
       "primaryCategory": "finance",
       "heroImageUrl": "https://aura-miniapp.netlify.app/banner.png",
-      "subtitle": "Real-time insights and automated DeFi strategies for your portfolio ",
-      "description": "AURA’s AI agent framework simplifies the Web3 experience by combining AI, onchain data, and real-time insights to deliver smart, personalized, and automated strategies. It monitors activity across Ethereum and Layer 2 networks — analyzing transactions, app usage, risk profiles, and fund movements — to suggest the most profitable next steps."
+      "subtitle": "Real-time portfolio insights",
+      "description": "AURA brings clarity to Web3 with AI-driven insights - analyzing Ethereum and Layer 2 data to automate smarter, safer, and more profitable portfolio decisions."
     },
     "accountAssociation": {
       "header": "eyJmaWQiOjIyODA1MywidHlwZSI6ImF1dGgiLCJrZXkiOiIweDcxMDdGNjIxYzg2NERjRTM1ODY1ZDgyNUMwOTU3OTBmQzJjMTU4NjMifQ",
