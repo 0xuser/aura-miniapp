@@ -3,10 +3,10 @@
       "name": "AdEx Aura Insights",
       "version": "1",
       "iconUrl": "https://aura-miniapp.netlify.app/icon.png",
-      "homeUrl": "https://https://aura-miniapp.netlify.app/",
+      "homeUrl": "https://aura-miniapp.netlify.app/",
       "splashImageUrl": "https://aura-miniapp.netlify.app/icon.png",
       "splashBackgroundColor": "#0b0c0f",
-      "webhookUrl": "https://https://aura-miniapp.netlify.app//api/webhook",
+      "webhookUrl": "https://aura-miniapp.netlify.app//api/webhook",
       "tags": [
         "defi",
         "ai",
