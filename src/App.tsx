@@ -203,9 +203,7 @@ function StrategiesView({ data, usd }: { data: PortfolioStrategiesResponse; usd:
               <div className="grid">
                 {data.strategies.map((s, idx) => (
                   <div key={idx} className="card stack-8">
-                    <div className="muted">
-                      LLM: {s.llm.provider} / {s.llm.model} (responseTime: {s.responseTime}ms)
-                    </div>
+                  <div className="muted">LLM: {s.llm.provider} / {s.llm.model}</div>
                     {s.error && <div style={{ color: "var(--negative)" }}>Worker error: {s.error}</div>}
                     {s.response.map((r, rIdx) => (
                       <div key={rIdx} className="stack-8">
