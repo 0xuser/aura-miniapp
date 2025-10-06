@@ -60,6 +60,7 @@ function App() {
 
   return (
     <div className="app stack-12">
+      <img className="banner" src="/banner.png" alt="AdEx AURA banner" />
       <div className="heading">Aura Mini App</div>
       <div className="muted">The AI agent framework for Web3</div>
       <ConnectMenu usd={usd} />

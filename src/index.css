@@ -118,3 +118,12 @@ li { color: var(--text-dim); }
 .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
 .ellipsis { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .break-anywhere { overflow-wrap: anywhere; word-break: break-word; }
+
+/* Banner */
+.banner {
+  width: 100%;
+  display: block;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: #0b0c0f;
+}
