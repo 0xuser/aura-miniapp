@@ -20,8 +20,8 @@
       "description": "AURA brings clarity to Web3 with AI-driven insights - analyzing Ethereum and Layer 2 data to automate smarter, safer, and more profitable portfolio decisions."
     },
     "accountAssociation": {
-      "header": "eyJmaWQiOjIyODA1MywidHlwZSI6ImF1dGgiLCJrZXkiOiIweDcxMDdGNjIxYzg2NERjRTM1ODY1ZDgyNUMwOTU3OTBmQzJjMTU4NjMifQ",
-      "payload": "eyJkb21haW4iOiJodHRwczovL2F1cmEtbWluaWFwcC5uZXRsaWZ5LmFwcC8ifQ",
-      "signature": "YhNz6xK/xs9tIOVDmyhf1adh4QLPReN8Wshm2EjMMUF/NMvYgkOZajg1t5pNWnHUOJU9f0il/SMWdu1BL45v1xs="
-    }
+        "header": "eyJmaWQiOjIyODA1MywidHlwZSI6ImF1dGgiLCJrZXkiOiIweDcxMDdGNjIxYzg2NERjRTM1ODY1ZDgyNUMwOTU3OTBmQzJjMTU4NjMifQ",
+        "payload": "eyJkb21haW4iOiJhdXJhLW1pbmlhcHAubmV0bGlmeS5hcHAifQ",
+        "signature": "tPz8i/2CSkZOpg4WI4ai3oeUh2BdxPJy73VLFt5+DSw0Z1sxtGpSfaAUElIT1Vn5D8pWm0YAXaP3e+t16pg/yBs="
+      }
   }
