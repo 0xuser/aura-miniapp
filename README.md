@@ -2,7 +2,10 @@
 
 The project integrates Aura into Farcaster as a Mini App, allowing users to connect their Farcaster or external wallets and view personalized insights about their portfolio. Additionally, it enables users to share their investment strategies as posts, helping to build community engagement and increase brand visibility.
 
-![Aura Insights Mini App](https://farcaster.xyz/miniapps/ZjU08KEPiEny/adex-aura-insights)
+URL: https://farcaster.xyz/miniapps/ZjU08KEPiEny/adex-aura-insights
+
+## Preview
+![preview demo](demo.png?raw=true)
 
 ## Disclaimer
 
