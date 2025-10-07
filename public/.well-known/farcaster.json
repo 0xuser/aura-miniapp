@@ -14,6 +14,11 @@
         "ai",
         "portfolio"
       ],
+      "tagline": "Real-time portfolio insights",
+      "ogTitle": "AdEx Aura Insights",
+      "ogDescription": "Real-time portfolio insights for your Ethereum and Layer 2 assets.",
+      "ogImageUrl": "https://aura-miniapp.netlify.app/hero.png",
+      "imageUrl": "https://aura-miniapp.netlify.app/screenshot1.png",
       "primaryCategory": "finance",
       "screenshotUrls": ["https://aura-miniapp.netlify.app/screenshot1.png", "https://aura-miniapp.netlify.app/screenshot2.png"],
       "heroImageUrl": "https://aura-miniapp.netlify.app/hero.png",

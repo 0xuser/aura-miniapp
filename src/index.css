@@ -85,7 +85,10 @@ body {
   border-color: transparent;
   color: var(--accent-contrast);
 }
-.btn-primary:hover { filter: brightness(0.95); }
+.btn-primary:hover { 
+  filter: brightness(0.95); 
+  color: var(--accent-contrast); 
+}
 
 .btn-ghost {
   background: transparent;
