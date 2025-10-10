@@ -173,10 +173,11 @@ function StrategiesView({ data, usd }: { data: PortfolioStrategiesResponse; usd:
             {portfolioOpen ? "Hide" : "Show"}
           </button>
         </div>
-        <div className="muted mono ellipsis" title={data.address} style={{ maxWidth: 520 }}>
-          Address: {data.address}
-        </div>
         {portfolioOpen && (
+          <>
+            <div className="muted mono ellipsis" title={data.address} style={{ maxWidth: 520 }}>
+              Address: {data.address}
+            </div>
           <div className="grid">
             {(data.portfolio || []).map((p) => (
               <div key={p.network?.chainId || 'unknown'} className="card stack-8">
@@ -198,6 +199,7 @@ function StrategiesView({ data, usd }: { data: PortfolioStrategiesResponse; usd:
               </div>
             ))}
           </div>
+          </>
         )}
       </div>
 
